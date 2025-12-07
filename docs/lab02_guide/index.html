@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KKU Campus Guide - แนะนำสถานที่ภายในมหาวิทยาลัยขอนแก่น</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2d2d2d;
+            background-color: #f5f5f5;
+        }
+
+        /* Header Section */
+        header {
+            background: linear-gradient(135deg, #A23E2C 0%, #d66632 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.8em;
+            margin-bottom: 15px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        /* Student Info Bar */
+        .student-info {
+            background: linear-gradient(135deg, #A23E2C 0%, #d66632 100%);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 3px solid #8B4513;
+        }
+
+        .student-info p {
+            display: inline-block;
+            margin: 0 30px;
+            color: #ffffff;
+            font-size: 1em;
+        }
+
+        .student-info strong {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        /* Intro Section */
+        .intro {
+            background: white;
+            padding: 50px;
+            margin-bottom: 60px;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .intro h2 {
+            color: #8B4513;
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .intro p {
+            color: #666;
+            font-size: 1.1em;
+            line-height: 1.8;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Places Grid */
+        .places-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        /* Place Card */
+        .place-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 3px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .place-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 30px rgba(139, 69, 19, 0.15);
+        }
+
+        /* Place Header */
+        .place-header {
+            background: #A23E2C;
+            color: white;
+            padding: 30px 25px;
+            text-align: center;
+        }
+
+        .place-header h3 {
+            font-size: 1.5em;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .place-header .english-name {
+            font-size: 0.95em;
+            opacity: 0.9;
+            font-weight: 300;
+            font-style: italic;
+        }
+
+        /* Place Images */
+        .place-images {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            background-color: #fafafa;
+        }
+
+        .place-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            color: #8B4513;
+            position: relative;
+            border-right: 1px solid #e0e0e0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .place-image:nth-child(2n) {
+            border-right: none;
+        }
+
+        .place-image::after {
+            content: attr(data-label);
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            font-size: 0.75rem;
+            background-color: rgba(139, 69, 19, 0.9);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        /* Place Content */
+        .place-content {
+            padding: 30px;
+        }
+
+        .place-content p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .place-features {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #8B4513;
+        }
+
+        .place-features h4 {
+            color: #8B4513;
+            font-size: 1.1em;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .place-features ul {
+            list-style: none;
+        }
+
+        .place-features li {
+            padding: 6px 0;
+            padding-left: 25px;
+            position: relative;
+            color: #666;
+        }
+
+        .place-features li::before {
+            content: '•';
+            position: absolute;
+            left: 8px;
+            color: #8B4513;
+            font-weight: bold;
+            font-size: 1.5em;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #2d2d2d;
+            color: #ccc;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 60px;
+        }
+
+        footer p {
+            margin: 8px 0;
+            font-size: 0.95em;
+        }
+
+        footer a {
+            color: #D4A574;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: #8B4513;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            header p {
+                font-size: 1em;
+            }
+
+            .student-info p {
+                display: block;
+                margin: 8px 0;
+            }
+
+            .intro {
+                padding: 30px 20px;
+            }
+
+            .intro h2 {
+                font-size: 1.8em;
+            }
+
+            .places-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .place-images {
+                grid-template-columns: 1fr;
+            }
+
+            .place-image {
+                height: 180px;
+                border-right: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 40px 15px;
+            }
+
+            header h1 {
+                font-size: 1.6em;
+            }
+
+            .container {
+                padding: 40px 15px;
+            }
+
+            .intro {
+                padding: 25px 15px;
+            }
+
+            .place-content {
+                padding: 20px;
+            }
+
+            .place-header {
+                padding: 25px 20px;
+            }
+
+            .place-header h3 {
+                font-size: 1.3em;
+            }
+        }
+    </style>
+    <style>
+        /* Header Section - ปรับเล็กน้อยเพื่อรองรับโลโก้ */
+header {
+    background: linear-gradient(135deg, #ffd8bd 0%, #ffffff 100%);
+    color: rgb(114, 46, 46);
+    padding: 60px 20px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    display: flex; /* ใช้ flexbox เพื่อจัดวางโลโก้และข้อความ */
+    flex-direction: column; /* จัดเรียงองค์ประกอบในคอลัมน์ */
+    align-items: center; /* จัดให้อยู่กึ่งกลางแนวนอน */
+    justify-content: center; /* จัดให้อยู่กึ่งกลางแนวตั้ง */
+    min-height: 200px; /* กำหนดความสูงขั้นต่ำของ Header */
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px; /* ระยะห่างระหว่างโลโก้และ subtitle */
+}
+
+.kku-logo {
+    
+    width: 80px; /* ขนาดของโลโก้ */
+    height: 80px;
+    margin-right: 20px; /* ระยะห่างระหว่างโลโก้กับชื่อเว็บไซต์ */
+    opacity: 0; /* เริ่มต้นด้วยความโปร่งใสเป็น 0 */
+    animation: fadeInScale 1s ease-out forwards; /* อนิเมชัน FadeIn และ Scale */
+}
+
+.header-title {
+    color: #A23E2C;
+    font-size: 2.8em;
+    margin-bottom: 0; /* ลบ margin-bottom เดิม */
+    font-weight: 700;
+    letter-spacing: 1px;
+    opacity: 0;
+    transform: translateY(20px); /* เริ่มต้นอยู่ต่ำกว่าตำแหน่งจริงเล็กน้อย */
+    animation: fadeInMoveUp 1s ease-out forwards; /* อนิเมชัน FadeIn และเลื่อนขึ้น */
+    animation-delay: 0.5s; /* หน่วงเวลาให้โลโก้มาก่อน */
+}
+
+.header-subtitle {
+    font-size: 1.2em;
+    opacity: 0;
+    font-weight: 300;
+    transform: translateY(20px); /* เริ่มต้นอยู่ต่ำกว่าตำแหน่งจริงเล็กน้อย */
+    animation: fadeInMoveUp 1s ease-out forwards; /* อนิเมชัน FadeIn และเลื่อนขึ้น */
+    animation-delay: 1s; /* หน่วงเวลาให้โลโก้และ Title มาก่อน */
+}
+
+/* Keyframe Animations */
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeInMoveUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design Adjustments for Header */
+@media (max-width: 768px) {
+    .logo-container {
+        flex-direction: column; /* เปลี่ยนเป็นเรียงแนวตั้งเมื่อหน้าจอเล็ก */
+        margin-bottom: 10px;
+    }
+    .kku-logo {
+        width: 60px;
+        height: 60px;
+        margin-right: 0;
+        margin-bottom: 10px; /* เพิ่มระยะห่างด้านล่างโลโก้ */
+    }
+    .header-title {
+        font-size: 2em;
+    }
+    .header-subtitle {
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 480px) {
+    .kku-logo {
+        width: 50px;
+        height: 50px;
+    }
+    .header-title {
+        font-size: 1.6em;
+    }
+}
+    </style>
+</head>
+<body>
+    <header>
+       
+    <div class="logo-container">
+        <img src="images/kku_logo.svg" alt="KKU Logo" class="kku-logo">
+        <h1 class="header-title">KKU Campus Guide</h1>
+    </div>
+    <p class="header-subtitle">แนะนำสถานที่สำคัญภายในมหาวิทยาลัยขอนแก่น</p>
+</header>
+
+    <div class="student-info">
+        <p><strong>รหัสนักศึกษา:</strong> 673380257-7</p>
+        <p><strong>ชื่อ-สกุล:</strong> นายเกียรติภูมิ สมภพ</p>
+    </div>
+
+    <div class="container">
+        <section class="intro">
+            <h2>เกี่ยวกับมหาวิทยาลัยขอนแก่น</h2>
+            <p>
+                มหาวิทยาลัยขอนแก่น (KKU) เป็นสถาบันอุดมศึกษาแห่งแรกของภาคตะวันออกเฉียงเหนือ 
+                ก่อตั้งเมื่อปี พ.ศ. 2509 ตั้งอยู่ถนนมิตรภาพ อำเภอเมืองขอนแก่น มีพื้นที่กว่า 5,800 ไร่ 
+                และมีชื่อเล่นว่า "มอดินแดง" เนื่องจากลักษณะของดินในพื้นที่ 
+                ปัจจุบันเป็น 1 ใน 9 มหาวิทยาลัยวิจัยแห่งชาติของไทย
+            </p>
+        </section>
+
+        <section class="places-grid">
+            <article class="place-card">
+                <div class="place-header">
+                    <h3>หอสมุดกลาง (สำนักวิทยบริการ)</h3>
+                    <p class="english-name">Central Library</p>
+                </div>
+                <div class="place-images">
+                    <div class="place-image" data-label="อาคารหอสมุด" >
+                    <img src="images/Libary.png" alt="ภาพหอสมุดกลาง" width=100%></div>
+                    <div class="place-image" data-label="ห้องอ่านหนังสือ">
+                        <img src="images/interialibary.jpg" alt="ห้องอ่านหนังสือ" width=100%>
+                    </div>
+                </div>
+                <div class="place-content">
+                    <p>
+                        หอสมุดกลางมหาวิทยาลัยขอนแก่นเป็นแหล่งเรียนรู้ที่สำคัญและทันสมัยที่สุดของมหาวิทยาลัย 
+                        มีหนังสือและทรัพยากรการเรียนรู้มากมาย พร้อมระบบห้องสมุดอิเล็กทรอนิกส์ที่ครบครัน 
+                        เปิดให้บริการนักศึกษาและบุคลากรเพื่อการค้นคว้าและศึกษาหาความรู้
+                    </p>
+                    <div class="place-features">
+                        <h4>สิ่งอำนวยความสะดวก</h4>
+                        <ul>
+                            <li>ห้องสมุดดิจิทัลและฐานข้อมูลออนไลน์</li>
+                            <li>ห้องศึกษาค้นคว้ากลุ่มและรายบุคคล</li>
+                            <li>อินเทอร์เน็ตความเร็วสูง Wi-Fi ฟรี</li>
+                            <li>เปิดบริการทุกวัน เวลา 08:00-22:00 น.</li>
+                        </ul>
+                    </div>
+                </div>
+            </article>
+
+            <article class="place-card">
+                <div class="place-header">
+                    <h3>ศูนย์สื่อการเรียนรู้ (@คอมเพล็กซ์)</h3>
+                    <p class="english-name">Learning Media Center</p>
+                </div>
+                <div class="place-images">
+                    <div class="place-image" data-label="โซนอาหาร">
+                    <img src="images/compect.jpg" alt="ภาพหอสมุดกลาง" width="180px">
+                    </div>
+                    <div class="place-image" data-label="อาคาร">
+                        <img src="images/compect1.jpg" alt="ภาพหอสมุดกลาง" width="250px">
+                    </div>
+                </div>
+                <div class="place-content">
+                    <p>
+                        ศูนย์สื่อการเรียนรู้หรือที่นักศึกษาเรียกกันว่า "คอมเพล็กซ์" เป็นศูนย์รวมการใช้ชีวิตของนักศึกษา 
+                        มีลักษณะคล้ายห้างสรรพสินค้าขนาดเล็ก ชั้นล่างเป็นโรงอาหารที่มีร้านอาหารหลากหลาย 
+                        ชั้นบนเป็นศูนย์หนังสือ ร้านสะดวกซื้อ และร้านค้าต่างๆ
+                    </p>
+                    <div class="place-features">
+                        <h4>บริการภายใน</h4>
+                        <ul>
+                            <li>โรงอาหารและร้านอาหารหลากหลาย</li>
+                            <li>ร้านหนังสือและเครื่องเขียน</li>
+                            <li>ร้านอินเทอร์เน็ตและคาเฟ่</li>
+                            <li>ร้านสะดวกซื้อ 7-Eleven</li>
+                        </ul>
+                    </div>
+                </div>
+            </article>
+
+            <article class="place-card">
+                <div class="place-header">
+                    <h3>หอศิลปวัฒนธรรม</h3>
+                    <p class="english-name">Arts and Cultural Gallery</p>
+                </div>
+                <div class="place-images">
+                    <div class="place-image" data-label="อาคารหอศิลป์">
+                        <img src="images/art1.png" alt="art" width="100%">
+                    </div>
+                    <div class="place-image" data-label="นิทรรศการ">
+                        <img src="images/art.jpg" alt="art" width="100%">
+                    </div>
+                </div>
+                <div class="place-content">
+                    <p>
+                        หอศิลปวัฒนธรรมมหาวิทยาลัยขอนแก่นเป็นแหล่งเรียนรู้และเผยแพร่ศิลปะวัฒนธรรมท้องถิ่น 
+                        จัดแสดงผลงานศิลปะ นิทรรศการทางวัฒนธรรม และเป็นสถานที่จัดกิจกรรมทางศิลปะต่างๆ 
+                        อาคารมีสถาปัตยกรรมที่สวยงามและเป็นสัญลักษณ์ของการอนุรักษ์วัฒนธรรมอีสาน
+                    </p>
+                    <div class="place-features">
+                        <h4>กิจกรรมและบริการ</h4>
+                        <ul>
+                            <li>นิทรรศการศิลปะและวัฒนธรรมหมุนเวียน</li>
+                            <li>จัดแสดงผลงานนักศึกษาและศิลปินท้องถิ่น</li>
+                            <li>พื้นที่จัดกิจกรรมทางวัฒนธรรม</li>
+                            <li>เปิดให้เข้าชมฟรี</li>
+                        </ul>
+                    </div>
+                </div>
+            </article>
+
+            <article class="place-card">
+                <div class="place-header">
+                    <h3>ศูนย์ประชุมกาญจนาภิเษก</h3>
+                    <p class="english-name">Kanchanapisek Convention Center</p>
+                </div>
+                <div class="place-images">
+                    <div class="place-image" data-label="ห้องประชุม">
+                        <img src="images/hall.png" alt="art" width="100%">
+                    </div>
+                    <div class="place-image" data-label="ห้องจัดงาน">
+                        <img src="images/hall1.jpg" alt="art" width="100%">
+                    </div>
+                </div>
+                <div class="place-content">
+                    <p>
+                        ศูนย์ประชุมอเนกประสงค์กาญจนาภิเษกเป็นอาคารขนาดใหญ่ที่ใช้สำหรับจัดงานสำคัญต่างๆ ของมหาวิทยาลัย 
+                        ทั้งพิธีพระราชทานปริญญาบัตร การประชุมวิชาการระดับชาติและนานาชาติ งานสัมมนา 
+                        และกิจกรรมใหญ่ต่างๆ มีห้องประชุมหลากหลายขนาดพร้อมอุปกรณ์ทันสมัย
+                    </p>
+                    <div class="place-features">
+                        <h4>ความโดดเด่น</h4>
+                        <ul>
+                            <li>ห้องประชุมใหญ่ความจุหลายพันคน</li>
+                            <li>ระบบเสียงและภาพระดับมาตรฐานสากล</li>
+                            <li>ห้องประชุมย่อยหลากหลายขนาด</li>
+                            <li>พื้นที่จัดแสดงและนิทรรศการ</li>
+                        </ul>
+                    </div>
+                </div>
+            </article>
+
+            <article class="place-card">
+                <div class="place-header">
+                    <h3>พิพิธภัณฑ์ธรรมชาติวิทยา</h3>
+                    <p class="english-name">Natural History Museum</p>
+                </div>
+                <div class="place-images">
+                    <div class="place-image" data-label="หน้าพิพิธภัณฑ์">
+                        <img src="images/musuem.jpg" alt="art" width="100%">
+                    </div>
+                    <div class="place-image" data-label="จัดแสดง">
+                        <img src="images/museum1.jpg" alt="art" width="100%">
+                    </div>
+                </div>
+                <div class="place-content">
+                    <p>
+                        พิพิธภัณฑ์ธรรมชาติวิทยามหาวิทยาลัยขอนแก่นเป็นแหล่งเรียนรู้ด้านวิทยาศาสตร์ธรรมชาติ 
+                        จัดแสดงซากดึกดำบรรพ์ ตัวอย่างหินและแร่ ตลอดจนสิ่งมีชีวิตต่างๆ 
+                        เป็นสถานที่เรียนรู้ที่น่าสนใจสำหรับนักศึกษาและประชาชนทั่วไป
+                    </p>
+                    <div class="place-features">
+                        <h4>จุดเด่น</h4>
+                        <ul>
+                            <li>โครงกระดูกไดโนเสาร์และซากดึกดำบรรพ์</li>
+                            <li>ตัวอย่างหิน แร่ และแร่ธาตุ</li>
+                            <li>จัดแสดงสัตว์ป่าและพืชพรรณ</li>
+                            <li>กิจกรรมการเรียนรู้สำหรับเยาวชน</li>
+                        </ul>
+                    </div>
+                </div>
+            </article>
+
+            <article class="place-card">
+                <div class="place-header">
+                    <h3>สนามกีฬากลาง</h3>
+                    <p class="english-name">Central Sports Stadium</p>
+                </div>
+                <div class="place-images">
+                    <div class="place-image" data-label="สนามกีฬา">
+                        <img src="images/ball.jpg" alt="art" width="100%">
+                    </div>
+                    <div class="place-image" data-label="ลู่วิ่ง">
+                        <img src="images/ball1.jpg" alt="art" width="100%">
+                    </div>
+                </div>
+                <div class="place-content">
+                    <p>
+                        สนามกีฬากลางมหาวิทยาลัยขอนแก่นเป็นสถานที่สำคัญสำหรับกิจกรรมกีฬาและพิธีการต่างๆ 
+                        เป็นสถานที่จัดกิจกรรม "เชียร์กลาง" ประเพณีอันโดดเด่นของ มข. ที่นักศึกษาทุกคณะมารวมตัวกัน 
+                        มีสนามฟุตบอล ลู่วิ่ง และอัฒจันทร์สำหรับนั่งเชียร์
+                    </p>
+                    <div class="place-features">
+                        <h4>สิ่งอำนวยความสะดวก</h4>
+                        <ul>
+                            <li>สนามฟุตบอลมาตรฐาน</li>
+                            <li>ลู่วิ่ง 400 เมตร</li>
+                            <li>อัฒจันทร์จุคนได้หลายพันคน</li>
+                            <li>พื้นที่จัดกิจกรรมขนาดใหญ่</li>
+                        </ul>
+                    </div>
+                </div>
+            </article>
+        </section>
+    </div>
+
+    <footer>
+        <p>📍 มหาวิทยาลัยขอนแก่น ถนนมิตรภาพ ตำบลในเมือง อำเภอเมืองขอนแก่น จังหวัดขอนแก่น 40002</p>
+        <p>📞 โทร: 043-202-222 | 🌐 เว็บไซต์: <a href="https://www.kku.ac.th" target="_blank">www.kku.ac.th</a></p>
+        <p>&copy; 2024 KKU Campus Guide - มหาวิทยาลัยขอนแก่น</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <!-- Gradient สีของ KKU -->
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#A23E2C;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d66632;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B4513;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#D4A574;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Shadow Filter -->
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dx="0" dy="2" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.3"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- วงกลมพื้นหลัง -->
+  <circle cx="100" cy="100" r="95" fill="url(#grad1)" opacity="0.1">
+    <animate attributeName="r" values="95;100;95" dur="3s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.1;0.15;0.1" dur="3s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- วงกลมกลาง -->
+  <circle cx="100" cy="100" r="80" fill="none" stroke="url(#grad1)" stroke-width="3" opacity="0.5">
+    <animate attributeName="stroke-dasharray" values="0 502;251 251;502 0" dur="4s" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" from="0 100 100" to="360 100 100" dur="20s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- รูปหนังสือ (สัญลักษณ์การศึกษา) -->
+  <g filter="url(#shadow)">
+    <!-- หนังสือเปิด -->
+    <path d="M 60 85 L 60 120 L 100 115 L 100 80 Z" fill="url(#grad1)">
+      <animate attributeName="d" 
+               values="M 60 85 L 60 120 L 100 115 L 100 80 Z;
+                       M 60 83 L 60 122 L 100 117 L 100 78 Z;
+                       M 60 85 L 60 120 L 100 115 L 100 80 Z"
+               dur="2s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 140 85 L 140 120 L 100 115 L 100 80 Z" fill="url(#grad2)">
+      <animate attributeName="d" 
+               values="M 140 85 L 140 120 L 100 115 L 100 80 Z;
+                       M 140 83 L 140 122 L 100 117 L 100 78 Z;
+                       M 140 85 L 140 120 L 100 115 L 100 80 Z"
+               dur="2s" repeatCount="indefinite"/>
+    </path>
+    
+    <!-- เส้นหนังสือ -->
+    <line x1="70" y1="92" x2="90" y2="90" stroke="white" stroke-width="1.5" opacity="0.7">
+      <animate attributeName="opacity" values="0.7;0.4;0.7" dur="2s" repeatCount="indefinite"/>
+    </line>
+    <line x1="70" y1="100" x2="90" y2="98" stroke="white" stroke-width="1.5" opacity="0.7">
+      <animate attributeName="opacity" values="0.7;0.4;0.7" dur="2s" repeatCount="indefinite" begin="0.2s"/>
+    </line>
+    <line x1="110" y1="92" x2="130" y2="90" stroke="white" stroke-width="1.5" opacity="0.7">
+      <animate attributeName="opacity" values="0.7;0.4;0.7" dur="2s" repeatCount="indefinite" begin="0.1s"/>
+    </line>
+    <line x1="110" y1="100" x2="130" y2="98" stroke="white" stroke-width="1.5" opacity="0.7">
+      <animate attributeName="opacity" values="0.7;0.4;0.7" dur="2s" repeatCount="indefinite" begin="0.3s"/>
+    </line>
+  </g>
+
+  <!-- ตัวอักษร KCG -->
+  <g font-family="Arial, sans-serif" font-weight="bold" filter="url(#shadow)">
+    <!-- K -->
+    <text x="55" y="155" font-size="32" fill="url(#grad1)">K
+      <animate attributeName="y" values="155;150;155" dur="2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="1;0.8;1" dur="2s" repeatCount="indefinite"/>
+    </text>
+    
+    <!-- C -->
+    <text x="83" y="155" font-size="32" fill="url(#grad2)">C
+      <animate attributeName="y" values="155;150;155" dur="2s" repeatCount="indefinite" begin="0.3s"/>
+      <animate attributeName="opacity" values="1;0.8;1" dur="2s" repeatCount="indefinite" begin="0.3s"/>
+    </text>
+    
+    <!-- G -->
+    <text x="112" y="155" font-size="32" fill="url(#grad1)">G
+      <animate attributeName="y" values="155;150;155" dur="2s" repeatCount="indefinite" begin="0.6s"/>
+      <animate attributeName="opacity" values="1;0.8;1" dur="2s" repeatCount="indefinite" begin="0.6s"/>
+    </text>
+  </g>
+
+  <!-- จุดประดับรอบๆ -->
+  <circle cx="100" cy="30" r="3" fill="#A23E2C">
+    <animate attributeName="opacity" values="1;0.3;1" dur="1.5s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="145" cy="55" r="3" fill="#d66632">
+    <animate attributeName="opacity" values="1;0.3;1" dur="1.5s" repeatCount="indefinite" begin="0.3s"/>
+  </circle>
+  <circle cx="165" cy="100" r="3" fill="#8B4513">
+    <animate attributeName="opacity" values="1;0.3;1" dur="1.5s" repeatCount="indefinite" begin="0.6s"/>
+  </circle>
+  <circle cx="145" cy="145" r="3" fill="#D4A574">
+    <animate attributeName="opacity" values="1;0.3;1" dur="1.5s" repeatCount="indefinite" begin="0.9s"/>
+  </circle>
+  <circle cx="55" cy="145" r="3" fill="#A23E2C">
+    <animate attributeName="opacity" values="1;0.3;1" dur="1.5s" repeatCount="indefinite" begin="1.2s"/>
+  </circle>
+  <circle cx="35" cy="100" r="3" fill="#d66632">
+    <animate attributeName="opacity" values="1;0.3;1" dur="1.5s" repeatCount="indefinite" begin="1.5s"/>
+  </circle>
+  <circle cx="55" cy="55" r="3" fill="#8B4513">
+    <animate attributeName="opacity" values="1;0.3;1" dur="1.5s" repeatCount="indefinite" begin="1.8s"/>
+  </circle>
+
+  <!-- ข้อความด้านล่าง -->
+  <text x="100" y="175" font-family="Arial, sans-serif" font-size="9" fill="#666" text-anchor="middle">
+    
+    <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite"/>
+  </text>
+</svg>
