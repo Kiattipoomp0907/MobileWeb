@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>แบบฟอร์มแนะนำสถานที่</title>
+  <style>
+    :root{font-family:system-ui,-apple-system,Segoe UI,Roboto,'Noto Sans',"Helvetica Neue",Arial;}
+    body{max-width:900px;margin:28px auto;padding:20px;background:#f7f7fb;color:#111}
+    header{display:flex;align-items:center;justify-content:space-between}
+    h1{font-size:20px;margin:0 0 12px}
+    form{background:#fff;padding:16px;border-radius:12px;box-shadow:0 6px 18px rgba(20,20,50,0.06)}
+    label{display:block;margin-top:12px;font-weight:600}
+    input[type=text],textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;font-size:14px}
+    textarea{min-height:100px;resize:vertical}
+    .row{display:flex;gap:12px}
+    .actions{margin-top:14px;display:flex;gap:10px;align-items:center}
+    button{padding:10px 14px;border-radius:9px;border:0;cursor:pointer}
+    button.primary{background:#0b74ff;color:#fff}
+    button.ghost{background:transparent;border:1px solid #cfd6e6}
+    .msg{margin-top:10px}
+    #listView{margin-top:20px}
+    .card{background:#fff;padding:12px;border-radius:10px;box-shadow:0 4px 10px rgba(20,20,50,0.04);display:flex;gap:12px}
+    .card img{width:120px;height:80px;object-fit:cover;border-radius:8px}
+    .card .meta{flex:1}
+    .small{font-size:12px;color:#555}
+    .controls{display:flex;gap:6px}
+    .controls button{padding:6px 8px;font-size:13px}
+    .empty{padding:18px;background:#fff;border-radius:10px;text-align:center;color:#666}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>แบบฟอร์มแนะนำสถานที่</h1>
+    <div>
+      <button id="gotoList" class="ghost">ไปหน้าดูข้อมูลทั้งหมด</button>
+    </div>
+  </header>
+
+  <form action="https://api.web3forms.com/submit" method="POST">
+  <input type="hidden" name="access_key" value="1e44dc8a-11bb-4d92-bcee-b2b80ba239b7">
+    <label for="name">ชื่อสถานที่ <span class="small">(จำเป็น)</span></label>
+    <input id="name" type="text" placeholder="เช่น ป่าในกรุง" required />
+
+    <label for="desc">รายละเอียด</label>
+    <textarea id="desc" placeholder="คำอธิบาย สถานที่ เหตุผลที่แนะนำ"></textarea>
+
+    <label for="img">URL ของภาพ</label>
+    <input id="img" type="text" placeholder="https://example.com/photo.jpg" />
+
+    <div class="actions">
+      <button type="submit" class="primary">ส่งข้อมูล</button>
+      <button type="button" id="clearForm" class="ghost">ล้างฟอร์ม</button>
+      <div class="msg" id="status"></div>
+    </div>
+  </form>
+
+  <section id="listView" aria-live="polite">
+    <!-- รายการทั้งหมดจะขึ้นตรงนี้ หรือผู้ใช้กดปุ่มดูข้อมูลทั้งหมด -->
+  </section>
+
+  <script>
+    // Simple single-file app that stores submissions in localStorage so it "ใช้งานได้จริง"
+    const STORAGE_KEY = 'places_suggestions_v1';
+    const form = document.getElementById('placeForm');
+    const status = document.getElementById('status');
+    const listView = document.getElementById('listView');
+    const gotoList = document.getElementById('gotoList');
+    const clearFormBtn = document.getElementById('clearForm');
+
+    function readStorage(){
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY) || '[]';
+        return JSON.parse(raw);
+      }catch(e){
+        console.error('storage read error',e);
+        return [];
+      }
+    }
+
+    function writeStorage(arr){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+    }
+
+    function renderList(){
+      const items = readStorage();
+      if(!items.length){
+        listView.innerHTML = '<div class="empty">ยังไม่มีรายการ  — กดส่งข้อมูลจากแบบฟอร์มด้านบน</div>';
+        return;
+      }
+
+      const html = items.map((it, idx)=>{
+        // safe-encode text for HTML
+        const name = escapeHtml(it.name);
+        const desc = escapeHtml(it.desc || '');
+        const img = it.img || '';
+        const preview = img ? `<img src="${escapeAttr(img)}" alt="${name}" onerror="this.style.display='none'"/>` : '';
+        return 
+          <div class="card" data-idx="${idx}">
+            ${preview}
+            <div class="meta">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <strong>${name}</strong>
+                <div class="controls">
+                  <button onclick="editItem(${idx})">แก้ไข</button>
+                  <button onclick="deleteItem(${idx})">ลบ</button>
+                </div>
+              </div>
+              <div class="small">${desc}</div>
+            </div>
+          </div>
+        ;
+      }).join('\n');
+
+      listView.innerHTML = html;
+    }
+
+    function escapeHtml(text){
+      const map = { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;" };
+      return String(text).replace(/[&<>\"']/g, m => map[m]);
+    }
+    function escapeAttr(text){ return escapeHtml(text).replace(/\"/g,'&quot;'); }
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      const name = form.name.value.trim();
+      const desc = form.desc.value.trim();
+      const img = form.img.value.trim();
+      if(!name){
+        showStatus('กรุณากรอกชื่อสถานที่', true); return;
+      }
+
+      const items = readStorage();
+      const newItem = { name, desc, img, createdAt: new Date().toISOString() };
+      items.push(newItem);
+      writeStorage(items);
+      showStatus('บันทึกเรียบร้อย ✓');
+      form.reset();
+      renderList();
+    });
+
+    clearFormBtn.addEventListener('click', ()=>{ form.reset(); showStatus('ฟอร์มถูกล้าง'); });
+
+    gotoList.addEventListener('click', ()=>{
+      // scroll to list section to "ไปหน้าดูข้อมูลทั้งหมด"
+      renderList();
+      listView.scrollIntoView({behavior:'smooth'});
+    });
+
+    function showStatus(msg, isError){
+      status.textContent = msg;
+      status.style.color = isError ? 'crimson' : 'green';
+      setTimeout(()=>{ status.textContent = ''; }, 3000);
+    }
+
+    // make edit/delete available from global so inline onclick can call
+    window.editItem = function(idx){
+      const items = readStorage();
+      const it = items[idx];
+      if(!it) return showStatus('ไม่พบรายการนี้', true);
+      // fill form for edit — we'll remove old item and let user submit
+      form.name.value = it.name;
+      form.desc.value = it.desc;
+      form.img.value = it.img;
+      // remove the old item so submit will create an updated one at the end
+      items.splice(idx,1);
+      writeStorage(items);
+      renderList();
+      showStatus('กำลังแก้ไข: แก้ข้อมูลในฟอร์มแล้วกดส่ง');
+      form.name.focus();
+    }
+
+    window.deleteItem = function(idx){
+      if(!confirm('ต้องการลบรายการนี้จริงหรือไม่?')) return;
+      const items = readStorage();
+      items.splice(idx,1);
+      writeStorage(items);
+      renderList();
+      showStatus('ลบแล้ว');
+    }
+
+    // initial render
+    renderList();
+  </script>
+</body>
+</html>
