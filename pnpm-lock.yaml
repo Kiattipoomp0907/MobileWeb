@@ -197,7 +197,7 @@ importers:
     dependencies:
       '':
         specifier: link:/
-        version: link:../../..
+        version: link:../../../../..
       '@capacitor/android':
         specifier: 8.0.0
         version: 8.0.0(@capacitor/core@7.4.4)
@@ -411,7 +411,7 @@ importers:
         specifier: ^0.34.6
         version: 0.34.6(jsdom@22.1.0)(terser@5.44.1)
 
-  apps/lab06-ionic-firebase:
+  apps/lab06-expense:
     dependencies:
       '@capacitor/app':
         specifier: 7.1.0

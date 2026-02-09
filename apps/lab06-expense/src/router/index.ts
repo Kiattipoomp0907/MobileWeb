@@ -1,7 +1,6 @@
 import { createRouter, createWebHashHistory } from '@ionic/vue-router';
 import { RouteRecordRaw } from 'vue-router';
 import TabsPage from '../views/TabsPage.vue';
-import AddExpensePage from '../views/AddExpensePage.vue'; 
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -18,11 +17,11 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: 'tab1',
-        component: () => import('@/views/Tab1Page.vue') 
+        component: () => import('@/views/Tab1Page.vue')
       },
       {
         path: 'tab2',
-        component: AddExpensePage 
+        component: () => import('@/views/Tab2Page.vue')
       },
       {
         path: 'tab3',
@@ -31,14 +30,18 @@ const routes: Array<RouteRecordRaw> = [
     ]
   },
   {
+    path: '/add-expense',
+    component: () => import('@/views/AddExpensePage.vue')
+  },
+  {
     path: '/edit/:id',
     component: () => import('@/views/EditExpensePage.vue')
   }
-]
+];
 
 const router = createRouter({
-  history: createWebHashHistory(), // 👈 เอา base path ออก ใช้แบบว่างๆ
+  history: createWebHashHistory(),
   routes
-})
+});
 
-export default router
+export default router;
