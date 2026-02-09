@@ -2,95 +2,97 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-title>รายการรายรับ–รายจ่าย</ion-title>
+        <ion-title>รายการบันทึก (Realtime)</ion-title>
       </ion-toolbar>
     </ion-header>
-    
+
     <ion-content :fullscreen="true">
       <ion-header collapse="condense">
         <ion-toolbar>
-          <ion-title size="large">รายการรายรับ–รายจ่าย</ion-title>
+          <ion-title size="large">รายการบันทึก</ion-title>
         </ion-toolbar>
       </ion-header>
 
-      <!-- สรุปยอดเงิน -->
-      <ion-card>
-        <ion-card-content>
-          <ion-grid>
-            <ion-row>
-              <ion-col size="6">
-                <div class="summary-item income">
-                  <div class="label">รายรับ</div>
-                  <div class="amount">{{ formatCurrency(totalIncome) }}</div>
-                </div>
-              </ion-col>
-              <ion-col size="6">
-                <div class="summary-item expense">
-                  <div class="label">รายจ่าย</div>
-                  <div class="amount">{{ formatCurrency(totalExpense) }}</div>
-                </div>
-              </ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col size="12">
-                <div class="summary-item balance">
-                  <div class="label">คงเหลือ</div>
-                  <div class="amount">{{ formatCurrency(balance) }}</div>
-                </div>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-card-content>
-      </ion-card>
+      <div class="summary-container ion-padding">
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-card color="success">
+                <ion-card-header>
+                  <ion-card-subtitle>รายรับรวม</ion-card-subtitle>
+                  <ion-card-title>+ {{ totalIncome.toLocaleString() }}</ion-card-title>
+                </ion-card-header>
+              </ion-card>
+            </ion-col>
+            <ion-col>
+              <ion-card color="danger">
+                <ion-card-header>
+                  <ion-card-subtitle>รายจ่ายรวม</ion-card-subtitle>
+                  <ion-card-title>- {{ totalExpense.toLocaleString() }}</ion-card-title>
+                </ion-card-header>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
 
-      <!-- รายการ -->
-      <ion-list v-if="expenses.length > 0">
+      <ion-list>
+        <ion-list-header>
+          <ion-label>ประวัติล่าสุด</ion-label>
+        </ion-list-header>
+
         <ion-item 
-          v-for="expense in expenses" 
-          :key="expense.id"
-          @click="goToEdit(expense.id)"
-          button>
+          v-for="item in expenses" 
+          :key="item.id" 
+          button 
+          :detail="true"
+          @click="router.push(`/edit/${item.id}`)"
+        >
+          <ion-icon 
+            :icon="item.type === 'income' ? arrowUpCircle : arrowDownCircle" 
+            slot="start" 
+            :color="item.type === 'income' ? 'success' : 'danger'">
+          </ion-icon>
+          
           <ion-label>
-            <h2>{{ expense.title }}</h2>
-            <p>{{ expense.category }} • {{ formatDate(expense.createdAt) }}</p>
-            <p v-if="expense.note" class="note">{{ expense.note }}</p>
+            <h2>{{ item.title }}</h2>
+            <p>{{ item.category }} | {{ formatDate(item.createdAt) }}</p>
+            <p v-if="item.note" style="font-size: 0.8em; color: gray;">{{ item.note }}</p>
           </ion-label>
-          <ion-note slot="end" :color="expense.type === 'income' ? 'success' : 'danger'">
-            <strong>{{ expense.type === 'income' ? '+' : '-' }}{{ formatCurrency(expense.amount) }}</strong>
+
+          <ion-note slot="end" :color="item.type === 'income' ? 'success' : 'danger'">
+            {{ item.type === 'income' ? '+' : '-' }} {{ item.amount.toLocaleString() }}
           </ion-note>
+        </ion-item>
+        
+        <ion-item v-if="expenses.length === 0">
+            <ion-label class="ion-text-center">ไม่มีรายการบันทึก</ion-label>
         </ion-item>
       </ion-list>
 
-      <div v-else class="empty-state ion-padding ion-text-center">
-        <ion-icon :icon="walletOutline" size="large" color="medium"></ion-icon>
-        <p>ยังไม่มีรายการ</p>
-        <p class="ion-text-wrap">เริ่มต้นบันทึกรายรับรายจ่ายของคุณ</p>
-      </div>
-
-      <!-- ปุ่มเพิ่มรายการ -->
-      <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-        <ion-fab-button @click="goToAdd">
-          <ion-icon :icon="add"></ion-icon>
-        </ion-fab-button>
-      </ion-fab>
     </ion-content>
   </ion-page>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue';
-import {
-  IonPage, IonHeader, IonToolbar, IonTitle, IonContent,
-  IonCard, IonCardContent, IonGrid, IonRow, IonCol,
-  IonList, IonItem, IonLabel, IonNote, IonFab, IonFabButton, IonIcon
-} from '@ionic/vue';
-import { add, walletOutline } from 'ionicons/icons';
-import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
-import { db } from '@/firebase';
+import { ref, onMounted, onUnmounted } from 'vue';
+// เพิ่ม useRouter เข้ามา
 import { useRouter } from 'vue-router';
+import { 
+  IonPage, IonHeader, IonToolbar, IonTitle, IonContent, 
+  IonList, IonItem, IonLabel, IonNote, IonListHeader,
+  IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonIcon
+} from '@ionic/vue';
+import { arrowUpCircle, arrowDownCircle } from 'ionicons/icons';
 
+// Firebase Imports
+import { collection, onSnapshot, query, orderBy, Timestamp } from "firebase/firestore";
+import { db } from "@/firebase";
+
+// เรียกใช้ Router
 const router = useRouter();
 
+// Interface เพื่อกำหนด Type ข้อมูล
 interface Expense {
   id: string;
   title: string;
@@ -98,69 +100,53 @@ interface Expense {
   type: 'income' | 'expense';
   category: string;
   note: string;
-  createdAt: any;
+  createdAt: Timestamp; // รับค่าเป็น Timestamp ของ Firebase
 }
 
 const expenses = ref<Expense[]>([]);
-let unsubscribe: (() => void) | null = null;
+const totalIncome = ref(0);
+const totalExpense = ref(0);
+let unsubscribe: any = null; // ตัวแปรสำหรับยกเลิกการฟังข้อมูลเมื่อปิดหน้า
 
-// คำนวณยอดรวม
-const totalIncome = computed(() => {
-  return expenses.value
-    .filter(e => e.type === 'income')
-    .reduce((sum, e) => sum + e.amount, 0);
-});
-
-const totalExpense = computed(() => {
-  return expenses.value
-    .filter(e => e.type === 'expense')
-    .reduce((sum, e) => sum + e.amount, 0);
-});
-
-const balance = computed(() => totalIncome.value - totalExpense.value);
-
-// ฟังก์ชันจัดรูปแบบเงิน
-const formatCurrency = (amount: number) => {
-  return new Intl.NumberFormat('th-TH', {
-    style: 'currency',
-    currency: 'THB',
-    minimumFractionDigits: 0
-  }).format(amount);
-};
-
-// ฟังก์ชันจัดรูปแบบวันที่
-const formatDate = (date: any) => {
-  if (!date) return '';
-  const d = date.toDate ? date.toDate() : new Date(date);
-  return new Intl.DateTimeFormat('th-TH', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  }).format(d);
-};
-
-const goToAdd = () => {
-  router.push('/add-expense');
-};
-
-const goToEdit = (id: string) => {
-  router.push(`/edit/${id}`);
-};
-
-// ดึงข้อมูลแบบ Realtime
 onMounted(() => {
-  const q = query(collection(db, 'expenses'), orderBy('createdAt', 'desc'));
-  
+  // สร้าง Query ดึงข้อมูลจาก collection 'expenses' และเรียงลำดับตามเวลาล่าสุด (desc)
+  const q = query(collection(db, "expenses"), orderBy("createdAt", "desc"));
+
+  // onSnapshot คือหัวใจของ Realtime Database
   unsubscribe = onSnapshot(q, (snapshot) => {
-    expenses.value = snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    })) as Expense[];
+    expenses.value = snapshot.docs.map(doc => {
+      return {
+        id: doc.id,
+        ...doc.data()
+      } as Expense;
+    });
+
+    calculateTotals();
   });
 });
 
+// ฟังก์ชันคำนวณยอดรวม
+const calculateTotals = () => {
+  totalIncome.value = expenses.value
+    .filter(item => item.type === 'income')
+    .reduce((sum, item) => sum + item.amount, 0);
+
+  totalExpense.value = expenses.value
+    .filter(item => item.type === 'expense')
+    .reduce((sum, item) => sum + item.amount, 0);
+};
+
+// ฟังก์ชันแปลงวันที่
+const formatDate = (timestamp: any) => {
+  if (!timestamp) return "";
+  // แปลง Timestamp ของ Firebase เป็น Date Object
+  const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+  return date.toLocaleDateString('th-TH', { 
+    day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute:'2-digit' 
+  });
+};
+
+// เมื่อออกจากหน้าจอนี้ ให้หยุดฟังข้อมูล (เพื่อประหยัด Resource)
 onUnmounted(() => {
   if (unsubscribe) {
     unsubscribe();
@@ -169,53 +155,7 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.summary-item {
-  text-align: center;
-  padding: 12px;
-  border-radius: 8px;
-  background: var(--ion-color-light);
-}
-
-.summary-item.income {
-  background: rgba(16, 220, 96, 0.1);
-}
-
-.summary-item.expense {
-  background: rgba(235, 68, 90, 0.1);
-}
-
-.summary-item.balance {
-  background: var(--ion-color-primary-tint);
-  color: white;
-}
-
-.summary-item .label {
-  font-size: 0.9rem;
-  opacity: 0.8;
-  margin-bottom: 4px;
-}
-
-.summary-item .amount {
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
-.note {
-  font-size: 0.85rem;
-  opacity: 0.7;
-  margin-top: 4px;
-}
-
-.empty-state {
-  margin-top: 40%;
-}
-
-.empty-state ion-icon {
-  font-size: 64px;
-  margin-bottom: 16px;
-}
-
-.empty-state p {
-  color: var(--ion-color-medium);
+.summary-container {
+  background-color: #f4f5f8;
 }
 </style>

@@ -1,7 +1,9 @@
+// 1. นำเข้าฟังก์ชันที่จำเป็น (เพิ่ม getFirestore เข้ามา)
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { getAnalytics } from "firebase/analytics";
+import { getFirestore } from "firebase/firestore"; // <--- บรรทัดสำคัญที่ต้องเพิ่ม
 
-// Your web app's Firebase configuration
+// 2. ค่า Config ของคุณ (อันเดิม)
 const firebaseConfig = {
   apiKey: "AIzaSyBuiegZ_CNMW9Gt0BNBGDaRp7phVj19CQc",
   authDomain: "mobileapp-3fc09.firebaseapp.com",
@@ -11,9 +13,9 @@ const firebaseConfig = {
   appId: "1:682665399312:web:dc0d553eaa805818ffa695",
   measurementId: "G-7K6L5J3BDY"
 };
-
-// Initialize Firebase
+// 3. เริ่มต้น Firebase App
 const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
-// Export Firestore instance
+// 4. เริ่มต้น Database และส่งออกตัวแปร db (สำคัญที่สุดสำหรับ Lab นี้)
 export const db = getFirestore(app);

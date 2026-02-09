@@ -1,17 +1,15 @@
-import { defineConfig } from 'vite';
-import vue from '@vitejs/plugin-vue';
-import path from 'path';
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import path from 'path'
 
+// https://vitejs.dev/config/
 export default defineConfig({
-  base: '/MobileWeb/docs/Lab6/', // ใช้ relative path
   plugins: [vue()],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src'),
+      '@': path.resolve(__dirname, './src'),
     },
   },
-  build: {
-    outDir: '../../docs/Lab6', // Build ไปที่ docs/Lab6
-    emptyOutDir: true,
-  },
-});
+  // 👇 เพิ่มบรรทัดนี้ เพื่อแก้ปัญหาหน้าจอขาว
+  base: './',
+})
