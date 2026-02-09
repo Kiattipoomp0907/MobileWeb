@@ -414,20 +414,20 @@ importers:
   apps/lab06-expense:
     dependencies:
       '@capacitor/app':
-        specifier: 7.1.0
-        version: 7.1.0(@capacitor/core@8.0.2)
+        specifier: 8.0.0
+        version: 8.0.0(@capacitor/core@8.0.2)
       '@capacitor/core':
         specifier: 8.0.2
         version: 8.0.2
       '@capacitor/haptics':
-        specifier: 7.0.2
-        version: 7.0.2(@capacitor/core@8.0.2)
+        specifier: 8.0.0
+        version: 8.0.0(@capacitor/core@8.0.2)
       '@capacitor/keyboard':
         specifier: 8.0.0
         version: 8.0.0(@capacitor/core@8.0.2)
       '@capacitor/status-bar':
-        specifier: 7.0.3
-        version: 7.0.3(@capacitor/core@8.0.2)
+        specifier: 8.0.0
+        version: 8.0.0(@capacitor/core@8.0.2)
       '@ionic/vue':
         specifier: ^8.0.0
         version: 8.7.10(@stencil/core@4.38.3)(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))
@@ -481,7 +481,7 @@ importers:
         specifier: ~5.9.0
         version: 5.9.3
       vite:
-        specifier: ^5.0.0
+        specifier: ^5.4.21
         version: 5.4.21(@types/node@24.10.1)(terser@5.44.1)
       vitest:
         specifier: ^0.34.6
@@ -1017,6 +1017,11 @@ packages:
     peerDependencies:
       '@capacitor/core': '>=7.0.0'
 
+  '@capacitor/app@8.0.0':
+    resolution: {integrity: sha512-OwzIkUs4w433Bu9WWAEbEYngXEfJXZ9Wmdb8eoaqzYBgB0W9/3Ed/mh6sAYPNBAZlpyarmewgP7Nb+d3Vrh+xA==}
+    peerDependencies:
+      '@capacitor/core': '>=8.0.0'
+
   '@capacitor/camera@7.0.0':
     resolution: {integrity: sha512-waEXGt1/qN8Uz8TWBl2exngLrkyll+fNFLj00ayJrPgZxQN8kfWHGz6YlJfQJLlBRXeay7W844Ao4iX0zziEMw==}
     peerDependencies:
@@ -1056,6 +1061,11 @@ packages:
     peerDependencies:
       '@capacitor/core': '>=7.0.0'
 
+  '@capacitor/haptics@8.0.0':
+    resolution: {integrity: sha512-DY1IUOjke1T4ITl7mFHQIKCaJJyHYAYRYHG9bVApU7PDOZiMVGMp48Yjzdqjya+wv/AHS5mDabSTUmhJ5uDvBA==}
+    peerDependencies:
+      '@capacitor/core': '>=8.0.0'
+
   '@capacitor/keyboard@7.0.3':
     resolution: {integrity: sha512-BIBKjmky5rOYNhvYhNeDi0MMvjwYZ6YF9JoCYcGKvKY+XLJKtezsEL78XfOlgWZBkbfR8uq3tzktY6PqgoYLKA==}
     peerDependencies:
@@ -1075,6 +1085,11 @@ packages:
     resolution: {integrity: sha512-JyRpVnKwHij9hgPWolF6PK+HT3e2HSPjN11/h2OmKxq8GAdPGARFLv+97eZl0pvuvm0Kka/LpiLb5whXISBg7Q==}
     peerDependencies:
       '@capacitor/core': '>=7.0.0'
+
+  '@capacitor/status-bar@8.0.0':
+    resolution: {integrity: sha512-aIj3bc7z8lfPgOen8HlrBrkfnxpFnh21OCx6jCUx4Mvv+B6eEkUQ49b32DOddgVfr+igRHLX2SYi7duqIsNDXg==}
+    peerDependencies:
+      '@capacitor/core': '>=8.0.0'
 
   '@colors/colors@1.5.0':
     resolution: {integrity: sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==}
@@ -5352,7 +5367,7 @@ snapshots:
     dependencies:
       '@capacitor/core': 8.0.1
 
-  '@capacitor/app@7.1.0(@capacitor/core@8.0.2)':
+  '@capacitor/app@8.0.0(@capacitor/core@8.0.2)':
     dependencies:
       '@capacitor/core': 8.0.2
 
@@ -5458,7 +5473,7 @@ snapshots:
     dependencies:
       '@capacitor/core': 8.0.1
 
-  '@capacitor/haptics@7.0.2(@capacitor/core@8.0.2)':
+  '@capacitor/haptics@8.0.0(@capacitor/core@8.0.2)':
     dependencies:
       '@capacitor/core': 8.0.2
 
@@ -5490,7 +5505,7 @@ snapshots:
     dependencies:
       '@capacitor/core': 8.0.1
 
-  '@capacitor/status-bar@7.0.3(@capacitor/core@8.0.2)':
+  '@capacitor/status-bar@8.0.0(@capacitor/core@8.0.2)':
     dependencies:
       '@capacitor/core': 8.0.2
 
