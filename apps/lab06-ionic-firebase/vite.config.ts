@@ -3,7 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import path from 'path'
 
 export default defineConfig({
-  base: '/MobileWeb/docs/Lab6/', // ใช้ได้ตามเดิม
+  base: './', // 👈 เปลี่ยนเป็น relative path
   plugins: [vue()],
   resolve: {
     alias: {

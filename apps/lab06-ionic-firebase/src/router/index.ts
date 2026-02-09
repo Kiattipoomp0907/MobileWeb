@@ -37,7 +37,7 @@ const routes: Array<RouteRecordRaw> = [
 ]
 
 const router = createRouter({
-  history: createWebHashHistory('/MobileWeb/docs/Lab6/'), // 👈 เพิ่m base path
+  history: createWebHashHistory(), // 👈 เอา base path ออก ใช้แบบว่างๆ
   routes
 })
 
