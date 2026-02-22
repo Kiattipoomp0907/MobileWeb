@@ -9,5 +9,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.23.0"
+  "packageManager": "pnpm@10.23.0",
+  "dependencies": {
+    "@ionic/vue": "^8.7.17",
+    "@ionic/vue-router": "^8.7.17"
+  }
 }
